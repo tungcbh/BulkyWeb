@@ -82,8 +82,6 @@ namespace BulkyWeb.Controllers
             }
 
             Category? category = _db.Categories.Find(id);
-            //Category? category1 = _db.Categories.FirstOrDefault(c => c.Id == id);
-            //Category? category2 = _db.Categories.Where(u => u.Id == id).FirstOrDefault();
 
             if (category == null)
             {
