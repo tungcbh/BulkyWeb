@@ -13,6 +13,6 @@ namespace Bulky.Models
         public string Name { get; set; }
         [Range(1, 100, ErrorMessage = "Display Order must be in 1 -> 100")]
         [DisplayName("Display Order:")]
-        public string DisplayOrder { get; set; }
+        public int DisplayOrder { get; set; }
     }
 }
