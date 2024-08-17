@@ -18,7 +18,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         }
         public IActionResult Index()
         {
-            List<Product> productList = _unitOfWork.ProductRepository.GetAll().ToList();
+            List<Product> productList = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category").ToList();
 
             return View(productList);
         }
