@@ -1,6 +1,8 @@
 ﻿using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
+using Bulky.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BulkyWeb.Areas.Admin.Controllers
 {
@@ -15,57 +17,54 @@ namespace BulkyWeb.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Product> productList = _unitOfWork.ProductRepository.GetAll().ToList();
+
             return View(productList);
         }
 
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
-            return View();
+            ProductVM productVM = new()
+            {
+                CategoryList = _unitOfWork.CategoryRepository
+                .GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.Name,
+                    Value = u.Id.ToString(),
+                }),
+                Product = new Product()
+            };
+
+            if (id == null || id == 0)
+            {
+                return View(productVM);
+            }
+            else //update
+            {
+                productVM.Product = _unitOfWork.ProductRepository.Get(u => u.Id == id);
+                return View(productVM);
+            }
         }
 
         [HttpPost]
-        public IActionResult Create(Product product)
+        public IActionResult Upsert(ProductVM productVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.ProductRepository.Add(product);
+                _unitOfWork.ProductRepository.Add(productVM.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product Create Successful";
                 return RedirectToAction("Index", "Product");
             }
-            else return View(product);
-
-        }
-
-        public IActionResult Edit(int? id)
-        {
-            if (id == 0 || id == null)
+            else
             {
-                return NotFound();
+                productVM.CategoryList = _unitOfWork.CategoryRepository
+                 .GetAll().Select(u => new SelectListItem
+                 {
+                     Text = u.Name,
+                     Value = u.Id.ToString(),
+                 });
+                return View(productVM);
             }
-
-            Product? product = _unitOfWork.ProductRepository.Get(o => o.Id == id);
-
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
-
-        }
-
-        [HttpPost]
-        public IActionResult Edit(Product product)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.ProductRepository.Update(product);
-                _unitOfWork.Save();
-                TempData["success"] = "Product Update Successful";
-                return RedirectToAction("Index", "Product");
-            }
-            else return View(product.Id);
-
         }
 
         public IActionResult Delete(int? id)

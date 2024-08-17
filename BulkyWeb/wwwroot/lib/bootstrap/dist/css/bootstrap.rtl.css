@@ -6703,7 +6703,7 @@ textarea.form-control-lg {
   position: sticky !important;
 }
 
-.top-0 {
+.to {
   top: 0 !important;
 }
 
@@ -6775,7 +6775,7 @@ textarea.form-control-lg {
   border-top: 1px solid #dee2e6 !important;
 }
 
-.border-top-0 {
+.border-to {
   border-top: 0 !important;
 }
 
@@ -6971,7 +6971,7 @@ textarea.form-control-lg {
   flex-wrap: wrap-reverse !important;
 }
 
-.gap-0 {
+.ga {
   gap: 0 !important;
 }
 
@@ -7329,7 +7329,7 @@ textarea.form-control-lg {
   margin-right: auto !important;
 }
 
-.p-0 {
+. {
   padding: 0 !important;
 }
 
