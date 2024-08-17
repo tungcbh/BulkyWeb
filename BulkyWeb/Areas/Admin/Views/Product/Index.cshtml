@@ -10,38 +10,26 @@
             </a>
         </div>
     </div>
-    <table class="table table-bordered table-striped">
+    <table id="myTable" class="display table table-bordered table-striped" style="width:100%">
         <thead>
             <tr>
                 <th>Title</th>
                 <th>ISBN</th>
-                <th>Price</th>
                 <th>Author</th>
+                <th>Price</th>
                 <th>Category</th>
-                <th></th>
+                <th>Action</th>
             </tr>
         </thead>
-        <tbody>
-            @foreach (var obj in Model.OrderBy(u => u.Id))
-            {
-                <tr>
-                    <td>@obj.Title</td>
-                    <td>@obj.ISBN</td>
-                    <td>@obj.ListPrice</td>
-                    <td>@obj.Author</td>
-                    <td>@obj.Category.Name</td>
-                    <td>
-                        <div class="w-120 btn-group" role="group">
-                            <a asp-controller="Product" asp-action="Upsert" asp-route-id=@obj.Id class ="btn btn-primary mx-2">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <a asp-controller="Product" asp-action="Delete" asp-route-id =@obj.Id class="btn btn-outline-danger mx-2">
-                                <i class="bi bi-trash"></i>
-                            </a>
-                        </div>
-                    </td>
-                </tr>            
-            }
-        </tbody>
     </table>
+
+
 </div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css" />
+    <script src="https://cdn.datatables.net/2.1.4/js/dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="~/js/product.js"></script>
+}

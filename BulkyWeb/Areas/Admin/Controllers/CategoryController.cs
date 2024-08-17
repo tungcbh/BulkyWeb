@@ -26,11 +26,6 @@ namespace BulkyWeb.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Create(Category category)
         {
-            //if (obj.Name == obj.DisplayOrder)
-            //{
-            //    ModelState.AddModelError("ModelOnly", "Không được đặt tên trùng với order");
-            //}
-
             if (ModelState.IsValid)
             {
                 _unitOfWork.CategoryRepository.Add(category);
