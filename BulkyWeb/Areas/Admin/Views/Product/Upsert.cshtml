@@ -13,90 +13,98 @@
     <div class="card-body p-4">
         <form method="post" enctype="multipart/form-data" class="row">
             <input asp-for="Product.Id" type="hidden" />
+            <div class="row">
+                <div class="col-10">
+                    <div class="">
+                        <!-- Title Field -->
+                        <div class="form-floating py-2">
+                            <input asp-for="Product.Title" class="form-control" id="Title" />
+                            <label for="Title">Title</label>
+                            <span asp-validation-for="Product.Title" class="text-danger"></span>
+                        </div>
 
-            <div class="col-12">
-                <!-- Title Field -->
-                <div class="form-floating py-2">
-                    <input asp-for="Product.Title" class="form-control" id="Title" />
-                    <label for="Title">Title</label>
-                    <span asp-validation-for="Product.Title" class="text-danger"></span>
-                </div>
+                        <!-- Description Field -->
+                        <div class="form-floating py-2">
+                            <textarea asp-for="Product.Description" class="form-control" id="Description"></textarea>
+                            <label for="Description">Description</label>
+                        </div>
 
-                <!-- Description Field -->
-                <div class="form-floating py-2">
-                    <textarea asp-for="Product.Description" class="form-control" id="Description"></textarea>
-                    <label for="Description">Description</label>
-                </div>
+                        <!-- ISBN Field -->
+                        <div class="form-floating py-2">
+                            <input asp-for="Product.ISBN" class="form-control" id="ISBN" />
+                            <label for="ISBN">ISBN</label>
+                            <span asp-validation-for="Product.ISBN" class="text-danger"></span>
+                        </div>
 
-                <!-- ISBN Field -->
-                <div class="form-floating py-2">
-                    <input asp-for="Product.ISBN" class="form-control" id="ISBN" />
-                    <label for="ISBN">ISBN</label>
-                    <span asp-validation-for="Product.ISBN" class="text-danger"></span>
-                </div>
+                        <!-- Author Field -->
+                        <div class="form-floating py-2">
+                            <input asp-for="Product.Author" class="form-control" id="Author" />
+                            <label for="Author">Author</label>
+                            <span asp-validation-for="Product.Author" class="text-danger"></span>
+                        </div>
 
-                <!-- Author Field -->
-                <div class="form-floating py-2">
-                    <input asp-for="Product.Author" class="form-control" id="Author" />
-                    <label for="Author">Author</label>
-                    <span asp-validation-for="Product.Author" class="text-danger"></span>
-                </div>
+                        <!-- List Price Field -->
+                        <div class="form-floating py-2">
+                            <input asp-for="Product.ListPrice" class="form-control" id="ListPrice" />
+                            <label for="ListPrice">List Price</label>
+                            <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
+                        </div>
 
-                <!-- List Price Field -->
-                <div class="form-floating py-2">
-                    <input asp-for="Product.ListPrice" class="form-control" id="ListPrice" />
-                    <label for="ListPrice">List Price</label>
-                    <span asp-validation-for="Product.ListPrice" class="text-danger"></span>
-                </div>
+                        <!-- Price Field -->
+                        <div class="form-floating py-2">
+                            <input asp-for="Product.Price" class="form-control" id="Price" />
+                            <label for="Price">Price for 1-50</label>
+                            <span asp-validation-for="Product.Price" class="text-danger"></span>
+                        </div>
 
-                <!-- Price Field -->
-                <div class="form-floating py-2">
-                    <input asp-for="Product.Price" class="form-control" id="Price" />
-                    <label for="Price">Price for 1-50</label>
-                    <span asp-validation-for="Product.Price" class="text-danger"></span>
-                </div>
+                        <!-- Price50 Field -->
+                        <div class="form-floating py-2">
+                            <input asp-for="Product.Price50" class="form-control" id="Price50" />
+                            <label for="Price50">Price for 50+</label>
+                            <span asp-validation-for="Product.Price50" class="text-danger"></span>
+                        </div>
 
-                <!-- Price50 Field -->
-                <div class="form-floating py-2">
-                    <input asp-for="Product.Price50" class="form-control" id="Price50" />
-                    <label for="Price50">Price for 50+</label>
-                    <span asp-validation-for="Product.Price50" class="text-danger"></span>
-                </div>
+                        <!-- Price100 Field -->
+                        <div class="form-floating py-2">
+                            <input asp-for="Product.Price100" class="form-control" id="Price100" />
+                            <label for="Price100">Price for 100+</label>
+                            <span asp-validation-for="Product.Price100" class="text-danger"></span>
+                        </div>
 
-                <!-- Price100 Field -->
-                <div class="form-floating py-2">
-                    <input asp-for="Product.Price100" class="form-control" id="Price100" />
-                    <label for="Price100">Price for 100+</label>
-                    <span asp-validation-for="Product.Price100" class="text-danger"></span>
-                </div>
+                        <!-- Category Field -->
+                        <div class="form-floating py-2">
+                            <select asp-for="Product.CategoryId" asp-items="Model.CategoryList" class="form-select" id="CategoryId">
+                                <option disabled selected>--Select Category--</option>
+                            </select>
+                            <label for="CategoryId">Category</label>
+                            <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                        </div>
 
-                <!-- Category Field -->
-                <div class="form-floating py-2">
-                    <select asp-for="Product.CategoryId" asp-items="Model.CategoryList" class="form-select" id="CategoryId">
-                        <option disabled selected>--Select Category--</option>
-                    </select>
-                    <label for="CategoryId">Category</label>
-                    <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
-                </div>
+                        <!-- Image URL Field -->
+                        <div class="form-floating py-2">
+                            <input asp-for="Product.ImageURL" type="file" class="form-control" id="ImageURL" name="file" />
+                            <label asp-for="Product.ImageURL">Image URL</label>
+                        </div>
 
-                <!-- Image URL Field -->
-                <div class="form-floating py-2">
-                    <input asp-for="Product.ImageURL" type="file" class="form-control" id="ImageURL" />
-                    <label for="ImageURL">Image URL</label>
-                </div>
-
-                <!-- Submit and Back Buttons -->
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary">
-                            @(Model.Product.Id == 0 ? "Create" : "Update")
-                        </button>
-                        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary ms-2">
-                            Back to List
-                        </a>
+                        <!-- Submit and Back Buttons -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary">
+                                    @(Model.Product.Id == 0 ? "Create" : "Update")
+                                </button>
+                                <a asp-controller="Product" asp-action="Index" class="btn btn-secondary ms-2">
+                                    Back to List
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
+                <div class="col-2">
+                    <img src="@Model.Product.ImageURL" width="100%" style="border-radius:2px; border:1px solid #bbb9b9" alt="Alternate Image" />
+                </div>
             </div>
+
+           
         </form>
     </div>
 </div>
