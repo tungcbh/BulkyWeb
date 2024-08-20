@@ -1,36 +1,36 @@
-var productDataTable;
+var companyDataTable;
 
 $(document).ready(function () {
-    loadDataTable();
-    console.log("load product 22");
+    loadDataTable2();
+    console.log("Chay duojc >>>>???");
 });
 
-function loadDataTable() {
-    productDataTable = $('#productTable').DataTable({
+function loadDataTable2() {
+    companyDataTable = $('#companyTable').DataTable({
         "ajax": {
-            url: '/Admin/Product/GetAll/',
+            url: '/Admin/Company/GetAll/',
             type: 'GET',
             dataType: 'json'
         },
         "columns": [
-            { data: 'title', width: "25%" },
-            { data: 'isbn', width: "20%" },
-            { data: 'author', width: "20%" },
-            { data: 'price', width: "10%" },
-            { data: 'category.name', width: "10%" },
+            { data: 'name', width: "25%" },
+            { data: 'streetAddress', width: "15%" },
+            { data: 'city', width: "15%" },
+            { data: 'state', width: "15%" },
+            { data: 'phoneNumber', width: "15%" },
             {
                 data: 'id',
                 "render": function (data) {
                     return `<div class="w-75 btn-group" role="group"> 
-                    <a href="/Admin/Product/Upsert?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> </a> 
-                    <a onClick=Delete('/Admin/Product/Delete/${data}') class="btn btn-secondary mx-2">  <i class="bi bi-trash"></i> </a> 
+                    <a href="/Admin/Company/Upsert?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> </a> 
+                    <a onClick=Delete('/Admin/Company/Delete/${data}') class="btn btn-secondary mx-2">  <i class="bi bi-trash"></i> </a> 
                     </div>`
                 },
                 width: "15%"
             }
         ]
     });
-    console.log("DCM load duoc Product");
+    console.log("Load duoc company ???");
 }
 
 function Delete(url) {
@@ -48,7 +48,7 @@ function Delete(url) {
                 url: url,
                 type: 'DELETE',
                 success: function (data) {
-                    productDataTable.ajax.reload();
+                    companyDataTable.ajax.reload();
                     console.log(data);
                     toastr.success(data.message);
                 }
