@@ -4,7 +4,7 @@ using Bulky.Models;
 
 namespace Bulky.DataAccess.Repository
 {
-    internal class ShoppingCartRepository : Repository<ShoppingCart>, IProductRepository
+    internal class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRepository
     {
         private readonly ApplicationDbContext _db;
 
