@@ -4,6 +4,8 @@ using Bulky.Models.ViewModels;
 using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
+using Stripe.Checkout;
 using System.Security.Claims;
 
 namespace BulkyWeb.Areas.Customer.Controllers
@@ -72,7 +74,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
 		[HttpPost]
 		[ActionName("Summary")]
-		public IActionResult SummaryPost(ShoppingCartVM shoppingCartVM)
+		public IActionResult SummaryPost()
 		{
 			var claimsIdentity = (ClaimsIdentity)User.Identity;
 			var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -123,6 +125,42 @@ namespace BulkyWeb.Areas.Customer.Controllers
 			if (applicationUser.CompanyId.GetValueOrDefault() == 0)
 			{
 				//stripe logic
+				StripeConfiguration.ApiKey = "sk_test_51PsKfaCmElgWESWemATsNRt4gIiyxvk1E18BL4IgSSVx16h4bP5YPkM8fUUHHID4399hwfAaoLtGJ2PW42pHkzDK00v5SfIhaj";
+				string domain = "https://localhost:7071/";
+				var options = new Stripe.Checkout.SessionCreateOptions
+				{
+					SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
+					CancelUrl = domain + "customer/cart/index",
+					LineItems = new List<Stripe.Checkout.SessionLineItemOptions>(),
+					Mode = "payment",
+				};
+
+				foreach (var item in ShoppingCartVM.ShoppingCartList)
+				{
+					var sessionLineItem = new SessionLineItemOptions
+					{
+						PriceData = new SessionLineItemPriceDataOptions
+						{
+							UnitAmount = (long)(item.Price * 100),
+							Currency = "usd",
+							ProductData = new SessionLineItemPriceDataProductDataOptions
+							{
+								Name = item.Product.Title,
+
+							}
+						},
+						Quantity = item.Count,
+					};
+					options.LineItems.Add(sessionLineItem);
+				}
+
+				var service = new SessionService();
+				Session session = service.Create(options);
+				_unitOfWork.OrderHeaderRepository.UpdateStripePaymentID(ShoppingCartVM.OrderHeader.Id, session.Id, session.PaymentIntentId);
+				_unitOfWork.Save();
+
+				Response.Headers.Add("Location", session.Url);
+				return new StatusCodeResult(303);
 			}
 
 			return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderHeader.Id });
