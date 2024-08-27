@@ -2,7 +2,6 @@ var productDataTable;
 
 $(document).ready(function () {
     loadDataTable();
-    console.log("load product 22");
 });
 
 function loadDataTable() {
@@ -30,7 +29,6 @@ function loadDataTable() {
             }
         ]
     });
-    console.log("DCM load duoc Product");
 }
 
 function Delete(url) {

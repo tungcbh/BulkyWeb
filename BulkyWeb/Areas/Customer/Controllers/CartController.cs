@@ -130,7 +130,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
 				var options = new Stripe.Checkout.SessionCreateOptions
 				{
 					SuccessUrl = domain + $"customer/cart/OrderConfirmation?id={ShoppingCartVM.OrderHeader.Id}",
-					CancelUrl = domain + "customer/cart/index",
+					CancelUrl = domain + "Customer/Cart/summary",
 					LineItems = new List<Stripe.Checkout.SessionLineItemOptions>(),
 					Mode = "payment",
 				};
@@ -168,6 +168,28 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
 		public IActionResult OrderConfirmation(int id)
 		{
+			OrderHeader orderHeader = _unitOfWork.OrderHeaderRepository.Get(u => u.Id == id, includeProperties: "ApplicationUser");
+			if (orderHeader.PaymentStatus != SD.PaymentStatusDelayedPayment)
+			{
+				// customer order
+				var service = new SessionService();
+				Session session = service.Get(orderHeader.SessionId);
+
+				if (session.PaymentStatus == "paid")
+				{
+					_unitOfWork.OrderHeaderRepository.UpdateStripePaymentID(id, session.Id, session.PaymentIntentId);
+					_unitOfWork.OrderHeaderRepository.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
+					_unitOfWork.Save();
+				}
+
+			}
+
+			List<ShoppingCart> shoppingCarts = _unitOfWork.ShoppingCartRepository
+				.GetAll(u => u.ApplicationUserId == orderHeader.ApplicationUserId).ToList();
+
+			_unitOfWork.ShoppingCartRepository.RemoveRange(shoppingCarts);
+			_unitOfWork.Save();
+
 			return View(id);
 		}
 

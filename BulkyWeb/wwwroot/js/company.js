@@ -2,7 +2,6 @@ var companyDataTable;
 
 $(document).ready(function () {
     loadDataTable2();
-    console.log("Chay duojc >>>>???");
 });
 
 function loadDataTable2() {
@@ -30,7 +29,6 @@ function loadDataTable2() {
             }
         ]
     });
-    console.log("Load duoc company ???");
 }
 
 function Delete(url) {
