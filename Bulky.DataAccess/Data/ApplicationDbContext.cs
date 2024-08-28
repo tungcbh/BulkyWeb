@@ -14,7 +14,12 @@ namespace Bulky.DataAccess.Data
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Company> Companies { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -111,6 +116,38 @@ namespace Bulky.DataAccess.Data
                     ImageURL = ""
                 }
             );
+
+            modelBuilder.Entity<Company>().HasData(
+                new Company
+                {
+                    Id = 1,
+                    Name = "FPT Software",
+                    State = "VN",
+                    City = "HN",
+                    StreetAddress = "Cau Giay",
+                    PhoneNumber = "123"
+                },
+                new Company
+                {
+                    Id = 2,
+                    Name = "CMC Global",
+                    State = "VN",
+                    City = "HN",
+                    StreetAddress = "Ha Dong",
+                    PhoneNumber = "1235"
+                },
+                new Company
+                {
+                    Id = 3,
+                    Name = "Viettel Digital",
+                    State = "VN",
+                    City = "HN",
+                    StreetAddress = "Cau Giay",
+                    PhoneNumber = "12333"
+                }
+            );
+
         }
+
     }
 }

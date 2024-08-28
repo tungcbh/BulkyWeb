@@ -1,7 +1,11 @@
-var dataTable;
+var productDataTable;
 
 $(document).ready(function () {
-    dataTable = $('#myTable').DataTable({
+    loadDataTable();
+});
+
+function loadDataTable() {
+    productDataTable = $('#productTable').DataTable({
         "ajax": {
             url: '/Admin/Product/GetAll/',
             type: 'GET',
@@ -25,7 +29,7 @@ $(document).ready(function () {
             }
         ]
     });
-});
+}
 
 function Delete(url) {
     Swal.fire({
@@ -42,7 +46,7 @@ function Delete(url) {
                 url: url,
                 type: 'DELETE',
                 success: function (data) {
-                    dataTable.ajax.reload();
+                    productDataTable.ajax.reload();
                     console.log(data);
                     toastr.success(data.message);
                 }

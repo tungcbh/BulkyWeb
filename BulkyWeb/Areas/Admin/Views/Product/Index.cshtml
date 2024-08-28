@@ -1,8 +1,8 @@
 ﻿@model List<Product>
 <div class="container">
     <div class="row pt-2 pb-2">
-        <div class="col-6 text-decoration-line-through">
-            Catergory List
+        <div class="col-6">
+            Product List
         </div>
         <div class="col-6 text-end">
             <a asp-controller="Product" asp-action="Upsert" class="btn btn-primary">
@@ -10,7 +10,7 @@
             </a>
         </div>
     </div>
-    <table id="myTable" class="display table table-bordered table-striped" style="width:100%">
+    <table id="productTable" class="display table table-bordered table-striped" style="width:100%">
         <thead>
             <tr>
                 <th>Title</th>
@@ -27,9 +27,5 @@
 </div>
 
 @section Scripts {
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.4/css/dataTables.dataTables.css" />
-    <script src="https://cdn.datatables.net/2.1.4/js/dataTables.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script src="~/js/product.js"></script>
 }
