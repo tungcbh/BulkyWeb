@@ -10,7 +10,7 @@ namespace Bulky.Models
         public int Id { get; set; }
         [Required]
         [Range(1, 1000, ErrorMessage = "Please enter a value between 1 and 1000.")]
-        public int? Count { get; set; }
+        public int Count { get; set; }
         public int? ProductId { get; set; }
         [ForeignKey("ProductId")]
         [ValidateNever]
@@ -21,6 +21,6 @@ namespace Bulky.Models
         public ApplicationUser? ApplicationUser { get; set; }
 
         [NotMapped]
-        public double? Price { get; set; }
+        public double Price { get; set; }
     }
 }
