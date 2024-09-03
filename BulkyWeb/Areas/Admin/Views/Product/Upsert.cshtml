@@ -13,8 +13,8 @@
     <div class="card-body p-4">
         <form method="post" enctype="multipart/form-data" class="row">
             <input asp-for="Product.Id" type="hidden" />
-            <input asp-for="Product.ImageURL" type="hidden" />
-            <div class="row">
+@*             <input asp-for="Product.ImageURL" type="hidden" />
+ *@            <div class="row">
                 <div class="col-10">
                     <div class="">
                         <!-- Title Field -->
@@ -83,8 +83,8 @@
 
                         <!-- Image URL Field -->
                         <div class="form-floating py-2">
-                            <input asp-for="Product.ImageURL" type="file" class="form-control" id="ImageURL" name="file" />
-                            <label asp-for="Product.ImageURL">Image URL</label>
+                            <input type="file" class="form-control" id="ImageURL" name="files" multiple/>
+                            <label asp-for="Product.ProductImages">Image URL</label>
                         </div>
 
                         <!-- Submit and Back Buttons -->
@@ -101,7 +101,19 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <img src="@Model.Product.ImageURL" width="100%" style="border-radius:2px; border:1px solid #bbb9b9" alt="Alternate Image" />
+                    @if(Model.Product.ProductImages != null)
+                    {
+                        foreach(var image in Model.Product.ProductImages)
+                        {
+                            <div class="border p-1 m-2 text-center">
+                                <img src="@image.ImageUrl" width="100%" 
+                                style="border-radius:2px; border:1px solid #bbb9b9" alt="Alternate Image" />
+                                <a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageId="@image.Id">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </a>
+                            </div>
+                        }
+                    }
                 </div>
             </div>
 

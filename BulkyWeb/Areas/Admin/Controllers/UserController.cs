@@ -66,18 +66,20 @@ namespace BulkyWeb.Areas.Admin.Controllers
                     user.CompanyId = roleVM.ApplicationUser.CompanyId;
                 }
                 if (oldRole == SD.Role_Company) user.CompanyId = null;
+                _userManager.RemoveFromRoleAsync(user, oldRole).GetAwaiter().GetResult();
+                _userManager.AddToRoleAsync(user, roleVM.ApplicationUser.Role).GetAwaiter().GetResult();
             }
-            if (roleVM.ApplicationUser.Role == oldRole && oldRole == SD.Role_Company)
+            else
             {
-                user.CompanyId = roleVM.ApplicationUser.CompanyId;
+                if (oldRole == SD.Role_Company && user.CompanyId != roleVM.ApplicationUser.CompanyId)
+                {
+                    user.CompanyId = roleVM.ApplicationUser.CompanyId;
+                }
             }
+
             //user property not contain role, only exist in view model
             _unitOfWork.ApplicationUserRepository.Update(user);
             _unitOfWork.Save();
-
-            _userManager.RemoveFromRoleAsync(user, oldRole).GetAwaiter().GetResult();
-            _userManager.AddToRoleAsync(user, roleVM.ApplicationUser.Role).GetAwaiter().GetResult();
-
 
             return RedirectToAction("Index");
         }
