@@ -130,7 +130,7 @@ namespace BulkyWeb.Areas.Admin.Controllers
         public IActionResult DeleteImage(int imageId)
         {
             var imageToDelete = _unitOfWork.ProductImageRepository.Get(u => u.Id == imageId);
-            var productId = imageToDelete?.Id;
+            var productId = imageToDelete?.ProductId;
             if (imageToDelete != null)
             {
                 if (!string.IsNullOrEmpty(imageToDelete.ImageUrl))
