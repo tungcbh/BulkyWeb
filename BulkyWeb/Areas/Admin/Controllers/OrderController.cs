@@ -135,7 +135,8 @@ namespace BulkyWeb.Areas.Admin.Controllers
             OrderVM.OrderDetails = _unitOfWork.OrderDetailRepository
                 .GetAll(u => u.OrderHeaderId == OrderVM.OrderHeader.Id, includeProperties: "Product");
 
-            string domain = "https://localhost:7071/";
+            string domain = Request.Scheme + "://" + Request.Host.Value + "/";
+            ;
             var options = new Stripe.Checkout.SessionCreateOptions
             {
                 SuccessUrl = domain + $"admin/order/PaymentConfirmation?orderId={OrderVM.OrderHeader.Id}",

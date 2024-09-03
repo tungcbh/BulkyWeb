@@ -7,8 +7,6 @@ namespace Bulky.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
         [Required]
         public string? Name { get; set; }
 
@@ -21,5 +19,7 @@ namespace Bulky.Models
         [ForeignKey("CompanyId")]
         [ValidateNever]
         public Company? Company { get; set; }
+        [NotMapped]
+        public string Role { get; set; }
     }
 }

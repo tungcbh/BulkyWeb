@@ -1,0 +1,103 @@
+﻿<div class="container">
+    <div class="row pt-2 pb-2">
+        <div class="col-6">
+            User List
+        </div>
+        <div class="col-6 text-end">
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-primary">
+                <i class="bi bi-bookmark-plus"></i> Create New User
+            </a>
+        </div>
+    </div>
+    <table id="userTable" class="display table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Company</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+    </table>
+</div>
+
+@section Scripts {
+    @* <script src="~/js/user.js"></script> *@
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script>
+        var userDataTable;
+
+        $(document).ready(function () {
+            loadDataTable2();
+        });
+
+        function loadDataTable2() {
+            userDataTable = $('#userTable').DataTable({
+                "ajax": {
+                    url: '/Admin/User/GetAll/',
+                    type: 'GET',
+                    dataType: 'json'
+                },
+                "columns": [
+                    { data: 'name', width: "15%" },
+                    { data: 'email', width: "25%" },
+                    { data: 'phoneNumber', width: "15%" },
+                    { data: 'company.name', width: "10%" },
+                    { data: 'role', width: "10%" },
+                    {
+                        data: { id: "id", lockoutEnd: "lockoutEnd"},
+                        "render": function (data) {
+                            var today = new Date().getTime();
+                            var lockout = new Date(data.lockoutEnd).getTime();
+                            if (lockout > today) {
+                                return `
+                                <div class="text-center">
+                                    <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor:pointer; width:100px;">
+                                        <i class="bi bi-unlock-fill"></i> Lock
+                                    </a>
+                                    <a href="/admin/user/rolemanagement?userId=${data.id}" class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
+                                        <i class="bi bi-pencil-square"></i> Permission
+                                    </a>
+                                </div>
+                                `
+                            }
+                            else {
+                                return `
+                                <div class="text-center">
+                                    <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor:pointer; width:100px;">
+                                        <i class="bi bi-lock-fill"></i> Unlock
+                                    </a>
+                                    <a href="/admin/user/rolemanagement?userId=${data.id}" class="btn btn-danger text-white" style="cursor:pointer; width:150px;">
+                                        <i class="bi bi-pencil-square"></i> Permission
+                                    </a>
+                                </div>
+                                `
+                            }
+                        },
+                        width: "25%"
+                    }
+                ]
+            });
+        }
+
+        function LockUnlock(id) {
+            $.ajax({
+                type: "POST",
+                url: '/Admin/User/LockUnlock',
+                data: JSON.stringify(id),
+                contentType: "application/json",
+                success: function(data) {
+                    if (data.success) {
+                        userDataTable.ajax.reload();
+                        toastr.success(data.message);
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            })
+        }
+    </script>
+}

@@ -1,0 +1,64 @@
+﻿@model RoleManagementVM
+
+<div class="card shadow-sm border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient text-center py-3">
+        <h2 class="text-white mb-0">Edit User Permission</h2>
+    </div>
+
+    <div class="card-body p-4">
+        <form method="post" class="row g-3">
+            <input asp-for="ApplicationUser.Id" hidden type="text" class="form-control" />
+            <div class="col-12 border p-4 rounded">
+                <div class="form-floating mb-3">
+                    <input asp-for="ApplicationUser.Name" readonly type="text" class="form-control" placeholder="User Name" />
+                    <label asp-for="ApplicationUser.Name" class="fs-5">User Name</label>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <select asp-for="ApplicationUser.Role" asp-items="@Model.RoleList" class="form-select" placeholder="User Role">
+                        <option disabled selected>-Select role-</option>
+                    </select>
+                </div>
+                <div class="form-floating mb-3 col-md-6">
+                    <select asp-for="ApplicationUser.CompanyId" style="display:none" asp-items="@Model.CompanyList" class="form-select" placeholder="Company">
+                        <option disabled selected>-Select company-</option>
+                    </select>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <button type="submit" class="btn btn-primary w-100">Create</button>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <a asp-action="Index" class="btn btn-secondary w-100">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        <partial name="_ValidationScriptsPartial" />
+        <script>
+            $(document).ready(function () {
+                function toggleCompanyDropdown() {
+                    var selection = $('#ApplicationUser_Role option:selected').text();
+                    if (selection == 'Company') {
+                        $('#ApplicationUser_CompanyId').show();
+                    } else {
+                        $('#ApplicationUser_CompanyId').hide();
+                    }
+                }
+
+                // Kiểm tra ngay khi trang được tải
+                toggleCompanyDropdown();
+
+                // Kiểm tra khi giá trị của Role thay đổi
+                $('#ApplicationUser_Role').change(function () {
+                    toggleCompanyDropdown();
+                });
+            });
+        </script>
+    }
+}
