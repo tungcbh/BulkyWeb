@@ -1,5 +1,6 @@
 using Bulky.DataAccess.Repository.IRepository;
 using Bulky.Models;
+using Bulky.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -22,7 +23,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Product> productList = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category");
+            IEnumerable<Product> productList = _unitOfWork.ProductRepository.GetAll(includeProperties: "Category,ProductImages");
             return View(productList);
         }
 
@@ -30,7 +31,7 @@ namespace BulkyWeb.Areas.Customer.Controllers
         {
             ShoppingCart shoppingCart = new()
             {
-                Product = _unitOfWork.ProductRepository.Get(u => u.Id == productId, includeProperties: "Category"),
+                Product = _unitOfWork.ProductRepository.Get(u => u.Id == productId, includeProperties: "Category,ProductImages"),
                 Count = 1,
                 ProductId = productId,
             };
@@ -44,15 +45,27 @@ namespace BulkyWeb.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             shoppingCart.ApplicationUserId = userId;
+
             var cartFromDB = _unitOfWork.ShoppingCartRepository
                 .Get(u => u.ApplicationUserId == userId && u.ProductId == shoppingCart.ProductId);
+
             if (cartFromDB != null)
             {
+                //Cart exist
                 cartFromDB.Count += shoppingCart.Count;
                 _unitOfWork.ShoppingCartRepository.Update(cartFromDB);
+                _unitOfWork.Save();
             }
-            else _unitOfWork.ShoppingCartRepository.Add(shoppingCart);
-            _unitOfWork.Save();
+            else
+            {
+                //add cart record
+                _unitOfWork.ShoppingCartRepository.Add(shoppingCart);
+                _unitOfWork.Save();
+                var tmp = _unitOfWork.ShoppingCartRepository.GetAll(u => u.ApplicationUserId == userId).Count();
+                HttpContext.Session.SetInt32(SD.SessionCart,
+                    _unitOfWork.ShoppingCartRepository.GetAll(u => u.ApplicationUserId == userId).Count());
+            }
+
             TempData["Success"] = "Cart updated successful";
             return RedirectToAction("Index");
         }

@@ -1,5 +1,5 @@
 ﻿@{
-    var status = Context.Request.Query["status"];
+    var status = Context.Request.Query["status"].ToString();
     var pending = "text-primary";
     var inprocess = "text-primary";
     var completed = "text-primary";
@@ -24,9 +24,7 @@
             all = "active text-white bg-primary";
             break;
     }
-
 }
-
 
 <div class="container">
     <div class="row pt-2 pb-2">
@@ -38,19 +36,19 @@
         <span></span>
         <ul class="list-group list-group-horizontal-sm">
             <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="inprocess">
-                <li class="list-group-item @inprocess">In Process</li>
+            <li class="list-group-item @inprocess">In Process</li>
             </a>
             <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="pending">
-                <li class="list-group-item @pending">Payment Pending</li>
-            </a>
-            <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="completed">
-                <li class="list-group-item @completed">Completed</li>
+            <li class="list-group-item @pending">Payment Pending</li>
             </a>
             <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="approved">
-                <li class="list-group-item @approved">Approved</li>
+            <li class="list-group-item @approved">Approved</li>
+            </a>
+            <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="completed">
+            <li class="list-group-item @completed">Completed</li>
             </a>
             <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="all">
-                <li class="list-group-item @all">All</li>
+            <li class="list-group-item @all">All</li>
             </a>
         </ul>
     </div>
@@ -67,10 +65,50 @@
             </tr>
         </thead>
     </table>
-
-
 </div>
 
 @section Scripts {
-    <script src="~/js/order.js"></script>
+    @* <script src="~/js/order.js"></script> *@
+    <script>
+        var orderDataTable;
+
+        $(document).ready(function () {
+            let url = window.location.search;
+            let estring = ["inprocess", "completed", "pending", "approved", "all"];
+            for (let status of estring) {
+                if (url.includes(status)) {
+                    loadDataTable(status);
+                    break;
+                }
+            }
+        });
+
+
+        function loadDataTable(status) {
+            orderDataTable = $('#orderTable').DataTable({
+                "ajax": {
+                    url: '/Admin/Order/GetAll?status=' + status,
+                    type: 'GET',
+                    dataType: 'json'
+                },
+                "columns": [
+                    { data: 'id', width: "10%" },
+                    { data: 'name', width: "15%" },
+                    { data: 'phoneNumber', width: "15%" },
+                    { data: 'applicationUser.email', width: "15%" },
+                    { data: 'orderStatus', width: "15%" },
+                    { data: 'orderTotal', width: "15%" },
+                    {
+                        data: 'id',
+                        "render": function (data) {
+                            return `<div class="w-75 btn-group" role="group">
+                                            <a href="/Admin/Order/Details?orderId=${data}" class="btn btn-primary mx-2"> <i class="bi bi-eye"></i> </a>
+                                            </div>`
+                        },
+                        width: "15%"
+                    }
+                ]
+            });
+        }
+    </script>
 }

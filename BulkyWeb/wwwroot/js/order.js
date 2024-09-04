@@ -1,9 +1,9 @@
-var orderDataTable;
+﻿var orderDataTable;
 
 $(document).ready(function () {
     let url = window.location.search;
     let estring = ["inprocess", "completed", "pending", "approved", "all"];
-    for (let status of estring) { 
+    for (let status of estring) {
         if (url.includes(status)) {
             loadDataTable(status);
             break;
@@ -30,11 +30,11 @@ function loadDataTable(status) {
                 data: 'id',
                 "render": function (data) {
                     return `<div class="w-75 btn-group" role="group"> 
-                    <a href="/Admin/Order/Details?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-eye"></i> </a> 
+                    <a href="/Admin/Order/Details?orderId=${data}" class="btn btn-primary mx-2"> <i class="bi bi-eye"></i> </a> 
                     </div>`
                 },
                 width: "15%"
             }
         ]
     });
-}
+}             
