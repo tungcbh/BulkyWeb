@@ -83,10 +83,3 @@ The project covers everything from the fundamentals of ASP.NET Core to advanced 
 * Or host locally on **IIS** with SQL Server.
 
 ---
-
-
----
-
-👉 README này gắn liền cả **source code + mô tả khóa học**.  
-Bạn có muốn mình bổ sung thêm **screenshot demo UI** + **database ERD diagram** để README trông hấp dẫn hơn không?
-```
